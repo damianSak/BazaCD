@@ -13,7 +13,7 @@ public class DeleteRecord {
     private List<Album> albumsToRemove = new LinkedList<>();
 
     Scanner scanner = new Scanner(System.in);
-    PrintToConsole printToConsole=new PrintToConsole();
+    PrintToConsole printToConsole = new PrintToConsole();
 
     public List<Album> deleteRecord(List<Album> albums) {
         do {
@@ -33,18 +33,15 @@ public class DeleteRecord {
                         if (line2.equals("T") || line2.equals("t")) {
                             albumsToRemove.add(a);
                         }
-                    }
-                    else {
+                    } else {
                         wrongAlbums.add(a);
                     }
                 }
-                if (wrongAlbums.size() ==albums.size()) {
+                if (wrongAlbums.size() == albums.size()) {
                     System.out.println("Nie ma takiego albumu, błąd pisowni lub nie wczytano żadnej listy albumów\n");
                 }
                 albums.removeAll(albumsToRemove);
-
             }
-
         } while (!line.equals("EXIT"));
         System.out.println("Zakończono usuwanie wybranych rekordów z kolekcji");
         return albums;

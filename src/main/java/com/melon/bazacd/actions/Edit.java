@@ -46,7 +46,7 @@ public class Edit {
                         }
                         if (line2.equals("Rok Wydania")) {
                             System.out.println("Podaj nowy rok wydania albumu:");
-                            String line3 = scan.nextLine();
+                            int line3 = scan.nextInt();
                             System.out.println("Zmieniono " + a.getReleaseDate() + " na " + line3);
                             a.setReleaseDate(line3);
                         }

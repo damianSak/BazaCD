@@ -5,9 +5,9 @@ public class Album {
     private String band;
     private String title;
     private String genre;
-    private String releaseDate;
+    private int releaseDate;
 
-    public Album(String band, String title, String genre, String releaseDate) {
+    public Album(String band, String title, String genre, int releaseDate) {
         this.band = band;
         this.title = title;
         this.genre = genre;
@@ -38,11 +38,11 @@ public class Album {
         this.genre = genre;
     }
 
-    public String getReleaseDate() {
+    public int getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(int releaseDate) {
         this.releaseDate = releaseDate;
     }
 }

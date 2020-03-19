@@ -22,7 +22,7 @@ public class ReadAlbum {
                 String singleAlbum2 = singleAlbums[1].trim();
                 String singleAlbum3 = singleAlbums[2].trim();
                 String singleAlbum4 = singleAlbums[3].trim();
-                albums.add(new Album(singleAlbum2, singleAlbum1, singleAlbum3, singleAlbum4));
+                albums.add(new Album(singleAlbum2, singleAlbum1, singleAlbum3, Integer.parseInt(singleAlbum4)));
             }
         } catch (IOException e) {
             System.out.println("Błąd IO" + e.fillInStackTrace());
