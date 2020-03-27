@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * AddRecord class
+ */
 public class AddRecord {
 
     private Scanner scanner = new Scanner(System.in);
