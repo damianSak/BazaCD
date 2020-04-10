@@ -15,14 +15,13 @@ import static java.lang.String.format;
 
 public class SaveDb {
 
-    File file;
-    String nazwaPliku;
-    PrintToConsole printToConsole = new PrintToConsole();
-    LoadDb loadDbdir = new LoadDb();
-
-    Scanner scan = new Scanner(System.in);
-
     public void saveDb(List<Album> albums) {
+        File file;
+        PrintToConsole printToConsole = new PrintToConsole();
+        LoadDb loadDbdir = new LoadDb();
+        String nazwaPliku;
+        Scanner scan = new Scanner(System.in);
+
         System.out.println("Wybierz, czy chcesz zapisać aktualną bazę do nowego pliku czy dopisać dane do już istniejącej");
         System.out.println("Nowa baza/ Dodaj do istniejącej bazy");
         String line = scan.nextLine();

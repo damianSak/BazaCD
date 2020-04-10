@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class Edit {
+public class EditRecord {
     PrintToConsole printToConsole = new PrintToConsole();
 
-    Scanner scan = new Scanner(System.in);
-    String lines = " ";
 
-    public List<Album> edit(List<Album> albums) {
+    public void edit(List<Album> albums) {
         List<Album> wrongTitle = new LinkedList<>();
+        String lines = " ";
+        Scanner scan = new Scanner(System.in);
         do {
             System.out.println("Wpisz tytuł albumu, którego elementy chciałbyś edytować: ");
             lines = scan.nextLine().trim();
@@ -61,7 +61,7 @@ public class Edit {
 
             System.out.println("Wprowadź 'T/t' aby wyszukać i edytować kolejne albumy lub EXIT aby wrócić do MENU: ");
             lines = scan.nextLine();
-        } while (lines.equals("T")||lines.equals("t"));
-        return albums;
+        } while (lines.toLowerCase().equals("t"));
+
     }
 }

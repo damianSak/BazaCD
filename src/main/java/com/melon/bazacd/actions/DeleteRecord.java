@@ -6,17 +6,17 @@ import java.util.*;
 
 public class DeleteRecord {
 
-    private String line = " ";
-    private List<Album> albumsToRemove = new LinkedList<>();
-
-    Scanner scanner = new Scanner(System.in);
     PrintToConsole printToConsole = new PrintToConsole();
 
-    public List<Album> deleteRecord(List<Album> albums) {
+    public void deleteRecord(List<Album> albums) {
+        String line = " ";
+        Scanner scanner = new Scanner(System.in);
+        List<Album> albumsToRemove = new LinkedList<>();
+        List<Album> wrongAlbums = new LinkedList<>();
         do {
             System.out.println(" Wpisz nazwę poszukiwanego albumu lub 'EXIT' aby wrócić do MENU: " + "\n");
             line = scanner.nextLine();
-            List<Album> wrongAlbums = new LinkedList<>();
+
             if (!line.equals("EXIT")) {
                 System.out.println("Znalezione pozycja w liście albumów: \n");
                 for (Album a : albums) {
@@ -27,7 +27,7 @@ public class DeleteRecord {
                         System.out.println("\n" + "Czy na pewno chcesz usunąć ten album z listy ? Wybierz T/t by usunąć lub N/n aby " +
                                 "zobaczyć kolejną znalezioną pozycję lub powrócić do wyszukiwania ");
                         String line2 = scanner.nextLine();
-                        if (line2.equals("T") || line2.equals("t")) {
+                        if (line2.toLowerCase().equals("t")) {
                             albumsToRemove.add(a);
                         }
                     } else {
@@ -41,6 +41,5 @@ public class DeleteRecord {
             }
         } while (!line.equals("EXIT"));
         System.out.println("Zakończono usuwanie wybranych rekordów z kolekcji");
-        return albums;
     }
 }

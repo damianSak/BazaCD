@@ -6,10 +6,8 @@ import java.util.Scanner;
 
 public class LoadDb {
 
-    private Scanner scanner = new Scanner(System.in);
-    private File file;
-
     protected void loadDBdir(){
+        File file;
         file = new File("D:\\java\\Baza danych płyt");
         String[] dirList = file.list();
         System.out.println("Zawartość katalogu baz Płyt:");
@@ -18,6 +16,8 @@ public class LoadDb {
         }
     }
     public File loadDb() {
+        File file;
+        Scanner scanner = new Scanner(System.in);
       loadDBdir();
         System.out.println("\n Wybierz bazę do wczytania:");
         String s;
@@ -32,6 +32,7 @@ public class LoadDb {
                     while (scan.hasNext()) {
                         System.out.println(scan.nextLine());
                     }
+                    scan.close();
                 } catch (FileNotFoundException e) {
                     System.out.println(e);
                 }

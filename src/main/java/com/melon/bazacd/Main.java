@@ -1,7 +1,5 @@
 package com.melon.bazacd;
 
-import com.melon.bazacd.actions.AlbumsCollection;
-
 import java.util.LinkedList;
 
 public class Main {

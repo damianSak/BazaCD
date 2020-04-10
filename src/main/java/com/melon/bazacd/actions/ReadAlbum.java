@@ -14,9 +14,9 @@ public class ReadAlbum {
         List<Album> albums = new LinkedList<>();
         try {
             List<String> lines = Files.readAllLines(Path.of(chosenDb.getPath()));
-            List<String> sublines = lines.subList(headingSize, lines.size() - 1);
+            List<String> albumElements = lines.subList(headingSize, lines.size() - 1);
 
-            for (String s : sublines) {
+            for (String s : albumElements) {
                 String[] singleAlbums = s.split("\\|");
                 String singleAlbum1 = singleAlbums[0].trim();
                 String singleAlbum2 = singleAlbums[1].trim();

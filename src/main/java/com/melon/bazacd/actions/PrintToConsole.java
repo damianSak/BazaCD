@@ -7,7 +7,7 @@ import java.util.Locale;
 public class PrintToConsole {
 
 
-    protected String heading() {
+    public String heading() {
         return "-------------------------+-------------------+-----------------+-------------\n" +
                 "          Tytuł          |     Wykonawca     |     Gatunek     | Rok Wydania \n" +
                 "-------------------------+-------------------+-----------------+-------------";
@@ -17,7 +17,7 @@ public class PrintToConsole {
         return "-------------------------+-------------------+-----------------+-------------";
     }
 
-   protected void printToConsole(List<Album> albums) {
+   public void printToConsole(List<Album> albums) {
 
         System.out.println(heading());
 

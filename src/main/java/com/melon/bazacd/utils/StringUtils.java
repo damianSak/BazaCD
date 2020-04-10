@@ -1,5 +1,9 @@
 package com.melon.bazacd.utils;
 
+/**
+ * it's doing somthing suspicious
+ */
+
 public class StringUtils {
 
     public static int countChar(String str, char c)

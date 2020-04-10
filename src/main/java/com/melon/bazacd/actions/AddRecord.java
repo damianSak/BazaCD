@@ -1,29 +1,21 @@
 package com.melon.bazacd.actions;
 
+import com.melon.bazacd.AlbumsCollection;
 import com.melon.bazacd.model.Album;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- * AddRecord class
- */
 public class AddRecord {
 
-    private Scanner scanner = new Scanner(System.in);
-
-
-    protected void addRecord(List<Album> albums) {
+    public void addRecord(List<Album> albums) {
         String band;
         String title;
         String genre;
+        String s;
+        List<Album> repeat = new LinkedList<>();
         int releaseDate;
         int actualYear = Calendar.getInstance().get(Calendar.YEAR);
-        String s;
-        List<Album> repet = new LinkedList<>();
+        Scanner scanner = new Scanner(System.in);
 
         do {
             do {
@@ -43,12 +35,13 @@ public class AddRecord {
 
             for (Album a : albums) {
                 if (a.getBand().equals(band) && a.getTitle().equals(title)) {
-                    repet.add(a);
+                    repeat.add(a);
                 }
             }
-            if (repet.size() > 0) {
+            if (repeat.size() > 0) {
                 System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
-                addRecord(albums);
+                AlbumsCollection albumsCollection = new AlbumsCollection(albums);
+                albumsCollection.start();
             }
             do {
                 System.out.println("Podaj gatunek wykonywanej muzyki: ");
@@ -64,12 +57,12 @@ public class AddRecord {
                     System.out.println("Nie podano roku wydania płyty lub data wykracza poza możliwy relany historyczny zakres ");
             } while (releaseDate < 1887 || releaseDate > actualYear);
 
-                albums.add(new Album(band, title, genre, releaseDate));
+            albums.add(new Album(band, title, genre, releaseDate));
 
             System.out.println("Wprowadź 'T'/'t' aby dodać kolejną pozycję lub 'N'/'n' aby wrócić do MENU: ");
             s = scanner.nextLine();
         }
-        while (s.equals("T") || s.equals("t"));
-
+        while (s.equals("T") || s.toLowerCase().equals("t"));
+scanner.close();
     }
 }
