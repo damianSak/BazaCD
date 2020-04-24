@@ -7,27 +7,29 @@ import java.util.*;
 
 public class AddRecord {
 
+
     public void addRecord(List<Album> albums) {
-        String band;
-        String title;
-        String genre;
+        String band="";
+        String title="";
+        String genre="";
         String s;
-        List<Album> repeat = new LinkedList<>();
-        int releaseDate;
+        int releaseDate=0;
+        int helperIntOnAQuestOfFindingIfAlbumIsAlreadyInsideCollection=0;
+
         int actualYear = Calendar.getInstance().get(Calendar.YEAR);
         Scanner scanner = new Scanner(System.in);
 
         do {
             do {
                 System.out.println("Podaj nazwę zespołu");
-                band = scanner.nextLine();
+                readFromUserHandlingEmptyInput(band);
                 if (band.isEmpty()) {
                     System.out.println("Nie podano rzadnej nazwy");
                 }
             } while (band.isEmpty());
             do {
                 System.out.println("Podaj tytuł płyty: ");
-                title = scanner.nextLine();
+                readFromUserHandlingEmptyInput(title);
                 if (title.isEmpty()) {
                     System.out.println("Nie podano rzadnej nazwy płyty");
                 }
@@ -35,24 +37,22 @@ public class AddRecord {
 
             for (Album a : albums) {
                 if (a.getBand().equals(band) && a.getTitle().equals(title)) {
-                    repeat.add(a);
+                    helperIntOnAQuestOfFindingIfAlbumIsAlreadyInsideCollection++;
                 }
             }
-            if (repeat.size() > 0) {
+            if (helperIntOnAQuestOfFindingIfAlbumIsAlreadyInsideCollection > 0) {
                 System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
-                AlbumsCollection albumsCollection = new AlbumsCollection(albums);
-                albumsCollection.start();
             }
             do {
                 System.out.println("Podaj gatunek wykonywanej muzyki: ");
-                genre = scanner.nextLine();
+                readFromUserHandlingEmptyInput(genre);
                 if (genre.isEmpty()) {
                     System.out.println("Nie podano rzadnego gatunku");
                 }
             } while (genre.isEmpty());
             do {
                 System.out.println("Podaj rok wydania albumu: ");
-                releaseDate = scanner.nextInt();
+                readIntFromUserHandlingEmptyInput(releaseDate);
                 if (releaseDate < 1887 || releaseDate > actualYear)
                     System.out.println("Nie podano roku wydania płyty lub data wykracza poza możliwy relany historyczny zakres ");
             } while (releaseDate < 1887 || releaseDate > actualYear);
@@ -63,6 +63,19 @@ public class AddRecord {
             s = scanner.nextLine();
         }
         while (s.equals("T") || s.toLowerCase().equals("t"));
-scanner.close();
+
+    }
+
+    private int readIntFromUserHandlingEmptyInput(int variable) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            variable = scanner.nextInt();
+        }
+        return variable;
+    }
+    private String readFromUserHandlingEmptyInput(String variable){
+        try (Scanner scanner = new Scanner(System.in)) {
+            variable = scanner.nextLine();
+        }
+        return variable;
     }
 }
