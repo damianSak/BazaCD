@@ -1,7 +1,11 @@
 package com.melon.bazacd.utils;
 
 /**
- * it's doing somthing suspicious
+ * i add this method by simply cutting it from stackoverflow
+ * co i can't explain what it is doing, but for sure
+ * it
+ * is
+ * doing somthing suspicious
  */
 
 public class StringUtils {

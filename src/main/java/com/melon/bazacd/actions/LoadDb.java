@@ -17,30 +17,26 @@ public class LoadDb {
     }
     public File loadDb() {
         File file;
-        Scanner scanner = new Scanner(System.in);
-      loadDBdir();
+        loadDBdir();
         System.out.println("\n Wybierz bazę do wczytania:");
-        String s;
-
-        do {
-            s = scanner.nextLine();
-            file = new File("D:\\java\\Baza danych płyt\\" + s+".txt");
-
-            if (file.exists()) {
-                try {
-                    Scanner scan = new Scanner(file);
-                    while (scan.hasNext()) {
-                        System.out.println(scan.nextLine());
+        try (Scanner scanner = new Scanner(System.in)) {
+            do {
+                String s = scanner.nextLine();
+                file = new File("D:\\java\\Baza danych płyt\\" + s + ".txt");
+                if (file.exists()) {
+                    try (Scanner scan = new Scanner(file)){
+                        while (scan.hasNext()) {
+                            System.out.println(scan.nextLine());
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
-                    scan.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println(e);
+                } else {
+                    System.out.println("Niepoprawna nazwa pliku do odczytu, podaj właściwą");
                 }
-            } else {
-                System.out.println("Niepoprawna nazwa pliku do odczytu, podaj właściwą");
-            }
-        } while (!file.exists());
+            } while (!file.exists());
 
-        return file;
+            return file;
+        }
     }
 }
