@@ -5,6 +5,8 @@ import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,6 +37,10 @@ public class AlbumsCollection {
     private static final String SAVE_TO_FILE = "Zapisz do pliku";
     private static final String EXIT = "Zakończ";
 
+    public AlbumsCollection() {
+        this(new LinkedList<>());
+    }
+
     public AlbumsCollection(List<Album> albums) {
         initializeActions(albums);
     }
@@ -46,47 +52,52 @@ public class AlbumsCollection {
         this.addRecord = new AddRecord();
         this.printToConsole = new PrintToConsole();
         this.editRecord = new EditRecord();
-        this.deleteRecord = new DeleteRecord();
+        this.deleteRecord = new DeleteRecord(albums);
         this.saveDb = new SaveDb();
     }
 
     public void start() {
-        String line = " ";
-        try (Scanner scan = new Scanner(System.in)) {
-            do {
-                welcomMenu();
-                line = scan.nextLine().trim();
+        String line;
 
-                if (line.equals(LOAD) || line.equals(LOAD_DB)) {
-                    loadDB();
-                }
-                if (line.equals(ADD) || line.equals(ADD_ALBUM)) {
-                    addRecord();
-                }
-                if (line.equals(PRINT) || line.equals(PRINT_DB)) {
-                    printToConsole();
-                }
-                if (line.equals(EDIT) || line.equals(EDIT_ELEMENTS)) {
-                    editRecord();
-                }
-                if (line.equals(DELETE) || line.equals(DELETE_FROM_DB)) {
-                    deleteRecord();
-                }
-                if (line.equals(SAVE) || line.equals(SAVE_TO_FILE)) {
-                    saveDb();
-                }
-                if (line.equals(EXIT)) {
-                    break;
-                } else {
-                    System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę");
-                }
-            } while
-            (line.isEmpty() || !line.toLowerCase().equals(EXIT));
-        }
+        do {
+            welcomMenu();
+            try (Scanner scan = new Scanner(System.in)) {
+                line = scan.nextLine().trim();
+            }
+
+            if (line.equals(LOAD) || line.equals(LOAD_DB)) {
+                loadDB();
+            }
+            if (line.equals(ADD) || line.equals(ADD_ALBUM)) {
+                addRecord();
+            }
+            if (line.equals(PRINT) || line.equals(PRINT_DB)) {
+                printToConsole();
+            }
+            if (line.equals(EDIT) || line.equals(EDIT_ELEMENTS)) {
+                editRecord();
+            }
+            if (line.equals(DELETE) || line.equals(DELETE_FROM_DB)) {
+                deleteRecord();
+            }
+            if (line.equals(SAVE) || line.equals(SAVE_TO_FILE)) {
+                saveDb();
+            }
+            if (line.equals(EXIT)) {
+                break;
+            } else {
+                System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę");
+            }
+        } while (line.isEmpty() || !line.toLowerCase().equals(EXIT));
     }
+
 
     private void endMessage() {
         System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego menu");
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        scanner.close();
+
     }
 
     private void welcomMenu() {
@@ -106,33 +117,31 @@ public class AlbumsCollection {
         chosenDb = loadDb.loadDb();
         albums = readAlbum.read(chosenDb, StringUtils.countChar(printToConsole.heading(), '\n') + 1);
         endMessage();
-        System.out.println(" ");
     }
 
     private void addRecord() {
         addRecord.addRecord(albums);
         endMessage();
-        System.out.println(" ");
     }
 
     private void printToConsole() {
         printToConsole.printToConsole(albums);
         endMessage();
-        System.out.println(" ");
     }
 
     private void editRecord() {
         editRecord.edit(albums);
+
     }
 
     private void deleteRecord() {
-        deleteRecord.deleteRecord(albums);
+        deleteRecord.deleteRecord();
+
     }
 
     private void saveDb() {
         saveDb.saveDb(albums);
         endMessage();
-        System.out.println(" ");
     }
 
 }
