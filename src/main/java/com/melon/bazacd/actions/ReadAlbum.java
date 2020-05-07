@@ -9,6 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ReadAlbum {
+    List<Album> albums;
+
+    public ReadAlbum(List<Album> albums) {
+
+        this.albums = albums;
+    }
 
     public List<Album> read(File chosenDb, int headingSize) {
         List<Album> albums = new LinkedList<>();

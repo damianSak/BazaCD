@@ -7,6 +7,8 @@ public class Album {
     private String genre;
     private int releaseDate;
 
+
+
     public Album(String band, String title, String genre, int releaseDate) {
         this.band = band;
         this.title = title;

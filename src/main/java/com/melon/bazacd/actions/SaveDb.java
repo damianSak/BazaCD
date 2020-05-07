@@ -1,6 +1,7 @@
 package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
+import com.melon.bazacd.utils.ConsoleInputProvider;
 
 import java.io.*;
 import java.nio.Buffer;
@@ -13,14 +14,24 @@ import java.util.Scanner;
 
 import static java.lang.String.format;
 
+//TODO napisać klase consol input provider utilis co ma tylko statyczne pola i metody co ma:
+// 1. pole skaner statyczny na system in.
+// 2. statyczna metoda która czyta ciag znaków.
+// 3. statyczna metoda co czyta liczbę całkowitą.
+// 4. statyczna metoda co zamyka skanera.
 public class SaveDb {
-    private static final String NEW = "Nowa ";
+    List<Album> albums;
+    private static final String NEW = "Nowa";
     private static final String NEW_DB = "Nowa baza";
     private static final String ADD = "Dodaj";
 
+    public SaveDb(List<Album> albums) {
+        this.albums = albums;
+    }
+
     public void saveDb(List<Album> albums) {
         File file;
-        PrintToConsole printToConsole = new PrintToConsole();
+        PrintToConsole printToConsole = new PrintToConsole(albums);
         LoadDb loadDbdir = new LoadDb();
         String fileName;
         System.out.println("Wybierz, czy chcesz zapisać aktualną bazę do nowego pliku czy dopisać dane do już istniejącej");
@@ -30,7 +41,7 @@ public class SaveDb {
             if (line.equals(NEW) || line.equals(NEW_DB)) {
                 System.out.println("Podaj nazwę pliku do zapisu: ");
                 do {
-                    fileName = scan.nextLine();
+                    fileName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
                     file = new File("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
                     if (file.exists()) {
                         System.out.println("Plik z podaną nazwa juz istniene, podaj inną nazwę: ");
@@ -40,7 +51,6 @@ public class SaveDb {
                 } while (file.exists());
                 try {
                     FileWriter writer = new FileWriter("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
-
                     writer.write(printToConsole.heading());
                     writer.write("\n");
                     for (Album a : albums) {
@@ -50,14 +60,14 @@ public class SaveDb {
                     writer.write(printToConsole.ending());
                     writer.close();
                 } catch (IOException e) {
-                    System.out.println("Łapiem coronawirusa" + e);
+                    e.printStackTrace();
                 }
             }
             if (line.equals(ADD)) {
                 loadDbdir.loadDBdir();
                 System.out.println("Wybierz bazę do której mają być dodane elementy: ");
                 do {
-                    fileName = scan.nextLine();
+                    fileName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
                     file = new File("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
                     if (file.exists()) {
                         System.out.println("Aktualna baza danych została dodana do " + "' " + fileName + " '");

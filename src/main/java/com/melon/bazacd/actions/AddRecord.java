@@ -1,11 +1,16 @@
 package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
+import com.melon.bazacd.utils.ConsoleInputProvider;
 
 import java.util.*;
 
 public class AddRecord {
+    List<Album> albums;
 
+    public AddRecord(List<Album> albums) {
+        this.albums = albums;
+    }
 
     public void addRecord(List<Album> albums) {
         String band;
@@ -13,7 +18,7 @@ public class AddRecord {
         String genre;
         String s;
         int releaseDate;
-        boolean isAlbumAlreadyInCollection = false;
+        boolean isAlbumAlreadyInCollectionLambda;
 
         int actualYear = Calendar.getInstance().get(Calendar.YEAR);
 
@@ -24,15 +29,11 @@ public class AddRecord {
             title = readStringFromUserHandlingEmptyInput("Podaj tytuł płyty: ",
                     "Nie podano rzadnej nazwy płyty");
 
-            for (Album a : albums) {
-                if (a.getBand().equals(band) && a.getTitle().equals(title)) {
-                    isAlbumAlreadyInCollection = true;
-                    break;
-                }
-            }
-            // TODO: 2020-05-02 lambda zamiast petli
-            if (!isAlbumAlreadyInCollection) {
-                System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
+            String finalBand = band;
+            String finalTitle = title;
+            isAlbumAlreadyInCollectionLambda = albums.stream().anyMatch(h -> h.getBand().equals(finalBand) &&
+                    h.getTitle().equals(finalTitle));
+            if (!isAlbumAlreadyInCollectionLambda) {
                 genre = readStringFromUserHandlingEmptyInput("Podaj gatunek wykonywanej muzyki: ",
                         "Nie podano rzadnego gatunku");
 
@@ -45,9 +46,9 @@ public class AddRecord {
                 System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
             }
             System.out.println("Wprowadź 'T'/'t' aby dodać kolejną pozycję lub 'N'/'n' aby wrócić do MENU: ");
-            try (Scanner scanner = new Scanner(System.in)) {
-                s = scanner.nextLine();
-            }
+
+            s = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+
         }
         while (s.equals("T") || s.toLowerCase().equals("t"));
     }
@@ -56,9 +57,7 @@ public class AddRecord {
         int number;
         do {
             System.out.println(mainMessage);
-            try (Scanner scanner = new Scanner(System.in)) {
-                number = scanner.nextInt();
-            }
+            number = ConsoleInputProvider.readIntFromUserHandlingEmptyInput();
             if (number < lowerConstraint || number > upperConstraint)
                 System.out.println(exceptionMessage);
         } while (number < lowerConstraint || number > upperConstraint);
@@ -69,9 +68,7 @@ public class AddRecord {
         String result;
         do {
             System.out.println(mainMessage);
-            try (Scanner scanner = new Scanner(System.in)) {
-                result = scanner.nextLine();
-            }
+            result = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
             if (result.isEmpty()) {
                 System.out.println(exceptionMessage);
             }

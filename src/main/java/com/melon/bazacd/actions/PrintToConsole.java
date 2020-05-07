@@ -1,10 +1,17 @@
 package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
+
 import java.util.List;
 import java.util.Locale;
 
 public class PrintToConsole {
+
+    List<Album> albums;
+
+    public PrintToConsole(List<Album> albums) {
+        this.albums = albums;
+    }
 
 
     public String heading() {
@@ -17,7 +24,7 @@ public class PrintToConsole {
         return "-------------------------+-------------------+-----------------+-------------";
     }
 
-   public void printToConsole(List<Album> albums) {
+    public void printToConsole(List<Album> albums) {
 
         System.out.println(heading());
 

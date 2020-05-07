@@ -2,6 +2,7 @@ package com.melon.bazacd;
 
 import com.melon.bazacd.actions.*;
 import com.melon.bazacd.model.Album;
+import com.melon.bazacd.utils.ConsoleInputProvider;
 import com.melon.bazacd.utils.StringUtils;
 
 import java.io.File;
@@ -48,12 +49,12 @@ public class AlbumsCollection {
     private void initializeActions(List<Album> albums) {
         this.albums = albums;
         this.loadDb = new LoadDb();
-        this.readAlbum = new ReadAlbum();
-        this.addRecord = new AddRecord();
-        this.printToConsole = new PrintToConsole();
-        this.editRecord = new EditRecord();
+        this.readAlbum = new ReadAlbum(albums);
+        this.addRecord = new AddRecord(albums);
+        this.printToConsole = new PrintToConsole(albums);
+        this.editRecord = new EditRecord(albums);
         this.deleteRecord = new DeleteRecord(albums);
-        this.saveDb = new SaveDb();
+        this.saveDb = new SaveDb(albums);
     }
 
     public void start() {
@@ -61,9 +62,7 @@ public class AlbumsCollection {
 
         do {
             welcomMenu();
-            try (Scanner scan = new Scanner(System.in)) {
-                line = scan.nextLine().trim();
-            }
+                line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
 
             if (line.equals(LOAD) || line.equals(LOAD_DB)) {
                 loadDB();
@@ -84,6 +83,7 @@ public class AlbumsCollection {
                 saveDb();
             }
             if (line.equals(EXIT)) {
+                ConsoleInputProvider.closeScanner();
                 break;
             } else {
                 System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę");
@@ -94,10 +94,11 @@ public class AlbumsCollection {
 
     private void endMessage() {
         System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego menu");
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.nextLine();
-        scanner.close();
-
+        try{
+            System.in.read();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void welcomMenu() {
