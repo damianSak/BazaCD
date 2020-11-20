@@ -1,11 +1,24 @@
 package com.melon.bazacd.utils;
 
+import java.io.Console;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleInputProvider {
 
     static Scanner scanner = new Scanner(System.in);
+
+
+    public static void waitForEnter() {
+
+        System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego MENU");
+        try {
+            int read = System.in.read(new byte[2]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static int readIntFromUserHandlingEmptyInput() {
         int number = 0;

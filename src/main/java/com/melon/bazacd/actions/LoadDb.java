@@ -24,8 +24,8 @@ public class LoadDb {
         System.out.println("\n Wybierz bazę do wczytania:");
 
         do {
-            String s = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-            file = new File("D:\\java\\Baza danych płyt\\" + s + ".txt");
+            String DbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+            file = new File("D:\\java\\Baza danych płyt\\" + DbName + ".txt");
             if (file.exists()) {
                 try (Scanner scan = new Scanner(file)) {
                     while (scan.hasNext()) {

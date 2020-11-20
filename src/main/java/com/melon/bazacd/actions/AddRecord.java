@@ -2,10 +2,12 @@ package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.ConsoleInputProvider;
+import com.melon.bazacd.utils.Messages;
 
 import java.util.*;
 
 public class AddRecord {
+
     List<Album> albums;
 
     public AddRecord(List<Album> albums) {
@@ -16,7 +18,7 @@ public class AddRecord {
         String band;
         String title;
         String genre;
-        String s;
+        String choose;
         int releaseDate;
         boolean isAlbumAlreadyInCollectionLambda;
 
@@ -24,7 +26,7 @@ public class AddRecord {
 
         do {
             band = readStringFromUserHandlingEmptyInput("Podaj nazwę zespołu:",
-                    "Nie podano żadnej nazwy");
+                    "Nie podano żadnej nazwy zespołu");
 
             title = readStringFromUserHandlingEmptyInput("Podaj tytuł płyty: ",
                     "Nie podano rzadnej nazwy płyty");
@@ -40,17 +42,18 @@ public class AddRecord {
                 releaseDate = readIntFromUserHandlingEmptyInput("Podaj rok wydania albumu: ",
                         "Nie podano roku wydania płyty lub data wykracza poza możliwy relany historyczny zakres "
                         , 1887, actualYear);
-
+                Messages.printSingleRecord(band, title, genre, releaseDate);
                 albums.add(new Album(band, title, genre, releaseDate));
             } else {
                 System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
             }
-            System.out.println("Wprowadź 'T'/'t' aby dodać kolejną pozycję lub 'N'/'n' aby wrócić do MENU: ");
 
-            s = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+            Messages.showEndingChooseMessage("dodać kolejną pozycję");
+
+            choose = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
 
         }
-        while (s.equals("T") || s.toLowerCase().equals("t"));
+        while (choose.toLowerCase().equals("t"));
     }
 
     private int readIntFromUserHandlingEmptyInput(String mainMessage, String exceptionMessage, int lowerConstraint, int upperConstraint) {

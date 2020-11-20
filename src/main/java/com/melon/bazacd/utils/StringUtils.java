@@ -1,11 +1,8 @@
 package com.melon.bazacd.utils;
 
 /**
- * i add this method by simply cutting it from stackoverflow
- * co i can't explain what it is doing, but for sure
- * it
- * is
- * doing somthing suspicious
+ * by putting as a 'c = \n' (end of the line) you
+ * can count how many rows are for example in heading ended by that way
  */
 
 public class StringUtils {

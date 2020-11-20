@@ -6,10 +6,9 @@ import com.melon.bazacd.utils.ConsoleInputProvider;
 import com.melon.bazacd.utils.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class AlbumsCollection {
 
@@ -24,19 +23,19 @@ public class AlbumsCollection {
     private DeleteRecord deleteRecord;
     private SaveDb saveDb;
 
-    private static final String LOAD = "Wczytaj";
-    private static final String LOAD_DB = "Wczytaj bazę";
-    private static final String ADD = "Dodaj";
-    private static final String ADD_ALBUM = "Dodaj album";
-    private static final String PRINT = "Drukuj";
-    private static final String PRINT_DB = "Drukuj bazę";
-    private static final String EDIT = "Edytuj";
-    private static final String EDIT_ELEMENTS = "Edytuj elementy";
-    private static final String DELETE = "Usuń";
-    private static final String DELETE_FROM_DB = "Usuń z bazy";
-    private static final String SAVE = "Zapisz";
-    private static final String SAVE_TO_FILE = "Zapisz do pliku";
-    private static final String EXIT = "Zakończ";
+    private static final String LOAD = "wczytaj";
+    private static final String LOAD_DB = "wczytaj bazę";
+    private static final String ADD = "dodaj";
+    private static final String ADD_ALBUM = "dodaj album";
+    private static final String PRINT = "drukuj";
+    private static final String PRINT_DB = "drukuj bazę";
+    private static final String EDIT = "edytuj";
+    private static final String EDIT_ELEMENTS = "edytuj elementy";
+    private static final String DELETE = "usuń";
+    private static final String DELETE_FROM_DB = "usuń z bazy";
+    private static final String SAVE = "zapisz";
+    private static final String SAVE_TO_FILE = "zapisz do pliku";
+    private static final String EXIT = "zakończ";
 
     public AlbumsCollection() {
         this(new LinkedList<>());
@@ -49,7 +48,7 @@ public class AlbumsCollection {
     private void initializeActions(List<Album> albums) {
         this.albums = albums;
         this.loadDb = new LoadDb();
-        this.readAlbum = new ReadAlbum(albums);
+        this.readAlbum = new ReadAlbum();
         this.addRecord = new AddRecord(albums);
         this.printToConsole = new PrintToConsole(albums);
         this.editRecord = new EditRecord(albums);
@@ -62,53 +61,43 @@ public class AlbumsCollection {
 
         do {
             welcomMenu();
-                line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+            line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput().toLowerCase();
 
             if (line.equals(LOAD) || line.equals(LOAD_DB)) {
                 loadDB();
-            }
-            if (line.equals(ADD) || line.equals(ADD_ALBUM)) {
+            } else if (line.equals(ADD) || line.equals(ADD_ALBUM)) {
                 addRecord();
-            }
-            if (line.equals(PRINT) || line.equals(PRINT_DB)) {
+            } else if (line.equals(PRINT) || line.equals(PRINT_DB)) {
                 printToConsole();
-            }
-            if (line.equals(EDIT) || line.equals(EDIT_ELEMENTS)) {
+            } else if (line.equals(EDIT) || line.equals(EDIT_ELEMENTS)) {
                 editRecord();
-            }
-            if (line.equals(DELETE) || line.equals(DELETE_FROM_DB)) {
+            } else if (line.equals(DELETE) || line.equals(DELETE_FROM_DB)) {
                 deleteRecord();
-            }
-            if (line.equals(SAVE) || line.equals(SAVE_TO_FILE)) {
+            } else if (line.equals(SAVE) || line.equals(SAVE_TO_FILE)) {
                 saveDb();
-            }
-            if (line.equals(EXIT)) {
+            } else if (line.equals(EXIT)) {
                 ConsoleInputProvider.closeScanner();
                 break;
             } else {
-                System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę");
+                System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę: ");
             }
-        } while (line.isEmpty() || !line.toLowerCase().equals(EXIT));
+        } while ( !line.toLowerCase().equals(EXIT));
     }
 
 
     private void endMessage() {
-        System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego menu");
-        try{
-            System.in.read();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+
+       ConsoleInputProvider.waitForEnter();
     }
 
     private void welcomMenu() {
         System.out.println("---------------------------");
         System.out.println("1. Wczytaj bazę płyt");
         System.out.println("2. Dodaj album do bazy");
-        System.out.println("3. Drukuj bazę na konsoli");
+        System.out.println("3. Drukuj elementy bazy na konsoli");
         System.out.println("4. Edytuj elementy bazy");
         System.out.println("5. Usuń album z bazy");
-        System.out.println("6. Zapisz bazę do pliku");
+        System.out.println("6. Zapisz bazę do pliku tekstowego");
         System.out.println("7. Zakończ");
         System.out.println("---------------------------");
         System.out.println("Wybierz opcję:");
@@ -122,7 +111,6 @@ public class AlbumsCollection {
 
     private void addRecord() {
         addRecord.addRecord(albums);
-        endMessage();
     }
 
     private void printToConsole() {
@@ -132,12 +120,10 @@ public class AlbumsCollection {
 
     private void editRecord() {
         editRecord.edit(albums);
-
     }
 
     private void deleteRecord() {
-        deleteRecord.deleteRecord();
-
+        deleteRecord.deleteRecord(albums);
     }
 
     private void saveDb() {

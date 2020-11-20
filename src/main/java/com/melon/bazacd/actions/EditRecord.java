@@ -2,11 +2,9 @@ package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.ConsoleInputProvider;
+import com.melon.bazacd.utils.Messages;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class EditRecord {
     List<Album> albums;
@@ -19,57 +17,75 @@ public class EditRecord {
     public void edit(List<Album> albums) {
 
         PrintToConsole printToConsole = new PrintToConsole(albums);
-        String line;
-        int number;
-        boolean isThereAWrongTitleInput = false;
+        String selectedAlbum;
+        String userChoice;
+        int albumSize = albums.size();
 
         do {
+            int albumValidation = albumSize;
             System.out.println("Wpisz tytuł albumu, którego elementy chciałbyś edytować: ");
-            line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-            for (Album a : albums) {
-                if (line.equals(a.getTitle())) {
+            selectedAlbum = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+            for (Album album : albums) {
+                if (selectedAlbum.equals(album.getTitle())) {
                     System.out.println("Wyszukano rekord: ");
                     System.out.println(printToConsole.heading());
-                    System.out.format(Locale.GERMAN, "%-25s|%-19s|%-17s| %-13s\n",
-                            a.getTitle(), a.getBand(), a.getGenre(), a.getReleaseDate());
+                    Messages.printSingleRecord(album.getTitle(), album.getBand(), album.getGenre(), album.getReleaseYear());
                     System.out.println(printToConsole.ending());
                     System.out.println("Wybierz pozycję do zmiany: ");
-                    line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                    if (line.equals("Tytuł")) {
-                        System.out.println("Podaj nowy tytuł albumu:");
-                        String line3 = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                        System.out.println("Zmieniono " + a.getTitle() + " na " + line3);
-                        a.setTitle(line3);
-                    }
-                    if (line.equals("Wykonawca")) {
-                        System.out.println("Podaj nowego wykonawcę albumu:");
-                        String line3 = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                        System.out.println("Zmieniono " + a.getBand() + " na " + line3);
-                        a.setBand(line3);
-                    }
-                    if (line.equals("Gatunek")) {
-                        System.out.println("Podaj nowy gatunek muzyki na albumie:");
-                        String line3 = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                        System.out.println("Zmieniono " + a.getGenre() + " na " + line3);
-                        a.setGenre(line3);
-                    }
-                    if (line.equals("Rok Wydania")) {
-                        System.out.println("Podaj nowy rok wydania albumu:");
-                        number = ConsoleInputProvider.readIntFromUserHandlingEmptyInput();
-                        System.out.println("Zmieniono " + a.getReleaseDate() + " na " + number);
-                        a.setReleaseDate(number);
-                    }
+                    userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                    do {
+                        switch (userChoice) {
+                            case "Tytuł":
+                                System.out.println("Podaj nowy tytuł albumu:");
+                                String oldTitle = album.getTitle();
+                                String newAlbumTitle = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                                album.setTitle(newAlbumTitle);
+                                Messages.showMessageEndOfFieldEdit(oldTitle, newAlbumTitle);
+                                break;
+
+                            case "Wykonawca":
+                                System.out.println("Podaj nowego wykonawcę albumu:");
+                                String oldBandName = album.getBand();
+                                String newBandName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                                album.setBand(newBandName);
+                                Messages.showMessageEndOfFieldEdit(oldBandName, newBandName);
+                                break;
+
+                            case "Gatunek":
+                                System.out.println("Podaj nowy gatunek muzyki na albumie:");
+                                String oldGenre = album.getGenre();
+                                String newGenreName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                                album.setGenre(newGenreName);
+                                Messages.showMessageEndOfFieldEdit(oldGenre, newGenreName);
+                                break;
+
+                            case "Rok Wydania":
+                                System.out.println("Podaj nowy rok wydania albumu:");
+                                int oldReleaseYear = album.getReleaseYear();
+                                int newReleaseYear = ConsoleInputProvider.readIntFromUserHandlingEmptyInput();
+                                album.setReleaseYear(newReleaseYear);
+                                Messages.showMessageEndOfFieldEdit(String.valueOf(oldReleaseYear), String.valueOf(newReleaseYear));
+                                break;
+
+                            default:
+                                System.out.println("Nazwa pozycji do zmiany nie była poprawna, podaj właściwą nazwę lub wprowadź " +
+                                        "'NEXT/next' aby przejść do kolejnego rekordu lub wyjść jeśli nie będzie ich wiecej: ");
+                                break;
+                        }
+                        userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                    } while (!userChoice.toLowerCase().equals("next"));
+
                 } else {
-                    isThereAWrongTitleInput = true;
+                    albumValidation--;
                 }
             }
-            if (isThereAWrongTitleInput) {
+            if (albumValidation == 0) {
                 System.out.println("Nie ma takiego albumu lub błąd pisowni");
             }
 
-            System.out.println("Wprowadź 'T/t' aby wyszukać i edytować kolejne albumy lub wciśnij ENTER aby wrócić do MENU: ");
-            line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-        } while (line.toLowerCase().equals("t"));
+            Messages.showEndingChooseMessage("aby wyszukać i edytować kolejne albumy");
+            userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+        } while (userChoice.toLowerCase().equals("t"));
 
     }
 }

@@ -7,12 +7,11 @@ import java.util.Locale;
 
 public class PrintToConsole {
 
-    List<Album> albums;
+     List<Album> albums;
 
     public PrintToConsole(List<Album> albums) {
         this.albums = albums;
     }
-
 
     public String heading() {
         return "-------------------------+-------------------+-----------------+-------------\n" +
@@ -30,7 +29,7 @@ public class PrintToConsole {
 
         for (Album a : albums) {
             System.out.format(Locale.GERMAN, "%-25s|%-19s|%-17s| %-13s\n",
-                    a.getTitle(), a.getBand(), a.getGenre(), a.getReleaseDate());
+                    a.getTitle(), a.getBand(), a.getGenre(), a.getReleaseYear());
         }
         System.out.println(ending());
 
