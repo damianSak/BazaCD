@@ -1,43 +1,51 @@
 package com.melon.bazacd.actions;
 
 import com.melon.bazacd.utils.ConsoleInputProvider;
+import com.melon.bazacd.utils.StringUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class LoadDb {
 
+    private String dbPath = StringUtils.selectDbPatch();
 
     protected void loadDBdir() {
-        File file;
-        file = new File("D:\\java\\Baza danych płyt");
+        File file = new File(dbPath);
         String[] dirList = file.list();
-        System.out.println("Zawartość katalogu baz Płyt:");
         for (int i = 0; i < dirList.length; i++) {
             System.out.println(dirList[i]);
         }
     }
 
-    public File loadDb() {
-        File file;
-        loadDBdir();
-        System.out.println("\n Wybierz bazę do wczytania:");
-
-        do {
-            String DbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-            file = new File("D:\\java\\Baza danych płyt\\" + DbName + ".txt");
-            if (file.exists()) {
-                try (Scanner scan = new Scanner(file)) {
-                    while (scan.hasNext()) {
-                        System.out.println(scan.nextLine());
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                System.out.println("Niepoprawna nazwa pliku do odczytu, podaj właściwą");
+    private void dbReader(File dbFile){
+        try (Scanner scan = new Scanner(dbFile)) {
+            while (scan.hasNext()) {
+                System.out.println(scan.nextLine());
             }
-        } while (!file.exists());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public File loadDbInterface() {
+        File file;
+
+        System.out.println("\nZawartość katalogu z Bazami Płyt:");
+        loadDBdir();
+
+        System.out.println("\nWybierz bazę do wczytania:");
+            do {
+                String dbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                file = new File(dbPath + "\\" + dbName + ".txt");
+                if (file.exists()) {
+                    dbReader(file);
+                } else {
+                    System.out.println("Niepoprawna nazwa pliku do odczytu, podaj właściwą nazwę:");
+                }
+            } while (!file.exists());
 
         return file;
     }

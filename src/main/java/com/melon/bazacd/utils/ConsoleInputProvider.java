@@ -1,6 +1,5 @@
 package com.melon.bazacd.utils;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,7 +9,7 @@ public class ConsoleInputProvider {
     static Scanner scanner = new Scanner(System.in);
 
 
-    public static void waitForEnter() {
+    public static void waitForPresedEnter() {
 
         System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego MENU");
         try {
@@ -21,12 +20,12 @@ public class ConsoleInputProvider {
     }
 
     public static int readIntFromUserHandlingEmptyInput() {
-        int number = 0;
+        int number = 0 ;
         boolean isThereException;
         do {
             try {
                 isThereException= false;
-                    number = scanner.nextInt();
+                number = scanner.nextInt();
 
                 if(String.valueOf(number).length()==0){
                     System.out.println("Nie wprowadzono żadnej liczby");
@@ -34,8 +33,9 @@ public class ConsoleInputProvider {
             } catch (InputMismatchException e) {
                 isThereException = true;
                 System.out.println("Wprowadzona wartość nie jest liczbą całkowitą, podaj własciwą liczbę");
+                scanner.next();
             }
-        } while (String.valueOf(number).length()==0 || isThereException);
+        } while (isThereException );
         return number;
     }
 

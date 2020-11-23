@@ -2,93 +2,134 @@ package com.melon.bazacd.actions;
 
 import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.ConsoleInputProvider;
+import com.melon.bazacd.utils.Messages;
+import com.melon.bazacd.utils.StringUtils;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import static java.lang.String.format;
 
 public class SaveDb {
-    List<Album> albums;
-    private static final String NEW = "Nowa";
-    private static final String NEW_DB = "Nowa baza";
-    private static final String ADD = "Dodaj";
 
-    public SaveDb(List<Album> albums) {
-        this.albums = albums;
+   private LoadDb loadDb;
+   private PrintToConsole printToConsole;
+
+    private final String dbPath = StringUtils.selectDbPatch();
+    private static final String NEW = "nowa";
+    private static final String NEW_DB = "nowa baza";
+    private static final String ADD = "dodaj";
+
+    public SaveDb() {
+        loadDb = new LoadDb();
+        printToConsole = new PrintToConsole();
     }
 
-    public void saveDb(List<Album> albums) {
-        File file;
-        PrintToConsole printToConsole = new PrintToConsole(albums);
-        LoadDb loadDbdir = new LoadDb();
-        String fileName;
-        System.out.println("Wybierz, czy chcesz zapisać aktualną bazę do nowego pliku czy dopisać dane do już istniejącej");
-        System.out.println("Nowa baza/ Dodaj do istniejącej bazy");
-        String line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-        if (line.equals(NEW) || line.equals(NEW_DB)) {
-            System.out.println("Podaj nazwę pliku do zapisu: ");
-            do {
-                fileName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                file = new File("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
-                if (file.exists()) {
-                    System.out.println("Plik z podaną nazwa juz istniene, podaj inną nazwę: ");
-                } else {
-                    System.out.println("Utworzono nową bazę danych o nazwię " + "' " + fileName + " '");
-                }
-            } while (file.exists());
-            try {
-                FileWriter writer = new FileWriter("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
-                writer.write(printToConsole.heading());
-                writer.write("\n");
-                for (Album a : albums) {
-                    writer.write(format(Locale.GERMAN, "%-25s|%-19s|%-17s| %-13s\n",
-                            a.getTitle(), a.getBand(), a.getGenre(), a.getReleaseYear()));
-                }
-                writer.write(printToConsole.ending());
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+    public void saveDbToNewFile(List<Album> albums, File dbName) {
+        try {
+            FileWriter writer = new FileWriter(dbName);
+            writer.write(printToConsole.printHeading());
+            writer.write("\n");
+            writeDbToFile(writer, albums);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if (line.equals(ADD)) {
-            loadDbdir.loadDBdir();
-            System.out.println("Wybierz bazę do której mają być dodane elementy: ");
-            do {
-                fileName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                file = new File("D:\\java\\Baza danych płyt\\" + fileName + ".txt");
-                if (file.exists()) {
-                    System.out.println("Aktualna baza danych została dodana do " + "' " + fileName + " '");
-                } else {
-                    System.out.println("Niepoprawna nazwa pliku, podaj właściwą");
-                }
+    }
 
-            } while (!file.exists());
 
-            try {
-                List<String> readedLines = Files.readAllLines(Path.of(file.getPath()));
-                List<String> reprintedLines = readedLines.subList(0, readedLines.size() - 1);
-                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                for (String s : reprintedLines) {
-                    bw.write(s + "\n");
+    public void saveDbToExistingFile(List<Album> albums, File dbFileName) {
+        try {
+            List<String> linesToReprint = readLinesFromExistingFileToReprint(dbFileName);
+            FileWriter writer = new FileWriter(dbFileName);
+
+            if (linesToReprint.size() < 4) {
+                saveDbToNewFile(albums, dbFileName);
+            } else {
+                for (String line : linesToReprint) {
+                    writer.write(line + "\n");
                 }
-                for (Album a : albums) {
-                    bw.write(format("%-25s|%-19s|%-17s| %-13s\n",
-                            a.getTitle(), a.getBand(), a.getGenre(), a.getReleaseYear()));
-                }
-                bw.write(printToConsole.ending());
-                bw.close();
-            } catch (IOException e) {
-                System.out.println("Błąd IO" + e);
+                writeDbToFile(writer, albums);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
+    private List<String> readLinesFromExistingFileToReprint(File dbFileName) {
+        List<String> linesToReprint = new LinkedList<>();
+        try {
+            List<String> readedLinesFromExistingDb = Files.readAllLines(Path.of(dbFileName.getPath()));
+            linesToReprint = readedLinesFromExistingDb.subList(0, readedLinesFromExistingDb.size() - 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return linesToReprint;
+    }
+
+    private void writeDbToFile(FileWriter writer, List<Album> albums) {
+        try {
+            for (Album album : albums) {
+                writer.write(format("%-25s|%-19s|%-17s| %-13s\n",
+                        album.getTitle(), album.getBand(), album.getGenre(), album.getReleaseYear()));
+            }
+            writer.write(printToConsole.printEnding());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveDbInterface(List<Album> albums) {
+        String userChoice;
+        File dbFile;
+        String dbName;
+
+        do {
+            System.out.println("Wybierz, czy chcesz zapisać aktualną bazę do nowego pliku czy dopisać dane do już istniejącej bazy");
+            System.out.println("Nowa baza/ Dodaj do istniejącej bazy:");
+            userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+
+            if (userChoice.toLowerCase().equals(NEW) || userChoice.toLowerCase().equals(NEW_DB)) {
+                do {
+                    System.out.println("Podaj nazwę pliku do zapisu: ");
+                    dbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                    dbFile = new File(dbPath + dbName + ".txt");
+                    if (dbFile.exists()) {
+                        System.out.println("Plik z podaną nazwa juz istniene, podaj inną nazwę: ");
+                    }
+                } while (dbFile.exists());
+
+                saveDbToNewFile(albums, dbFile);
+                System.out.println("Utworzono nową bazę danych o nazwię " + "' " + dbName + " '");
+                Messages.showEndingChooseMessage("zapisać wybraną bazę jeszcze raz");
+
+
+            } else if (userChoice.toLowerCase().equals(ADD)) {
+                loadDb.loadDBdir();
+                System.out.println("Wybierz bazę do której mają być dodane elementy: ");
+                do {
+                    dbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+                    dbFile = new File(dbPath + dbName + ".txt");
+                    if (!dbFile.exists()) {
+                        System.out.println("Niepoprawna nazwa pliku, podaj właściwą: ");
+                    }
+                } while (!dbFile.exists());
+
+                saveDbToExistingFile(albums, dbFile);
+                System.out.println("Aktualna baza danych została dodana do " + "' " + dbName + " '");
+                Messages.showEndingChooseMessage("zapisać wybraną bazę jeszcze raz");
+            } else {
+                System.out.println("Nie wybrano właściwej opcji zapisu");
+                Messages.showEndingChooseMessage("wprowadzić właściwą opcję do zapisu");
+            }
+            userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+        } while (!userChoice.toLowerCase().equals("n"));
     }
 }
 

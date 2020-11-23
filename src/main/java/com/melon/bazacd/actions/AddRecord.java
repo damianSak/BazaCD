@@ -3,61 +3,34 @@ package com.melon.bazacd.actions;
 import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.ConsoleInputProvider;
 import com.melon.bazacd.utils.Messages;
+import com.melon.bazacd.utils.StringUtils;
 
 import java.util.*;
 
 public class AddRecord {
 
-    List<Album> albums;
+   private List<Album> albums;
+   private PrintToConsole printToConsole;
 
     public AddRecord(List<Album> albums) {
         this.albums = albums;
+        this.printToConsole = new PrintToConsole();
     }
 
-    public void addRecord(List<Album> albums) {
-        String band;
-        String title;
-        String genre;
-        String choose;
-        int releaseDate;
-        boolean isAlbumAlreadyInCollectionLambda;
-
-        int actualYear = Calendar.getInstance().get(Calendar.YEAR);
-
-        do {
-            band = readStringFromUserHandlingEmptyInput("Podaj nazwę zespołu:",
-                    "Nie podano żadnej nazwy zespołu");
-
-            title = readStringFromUserHandlingEmptyInput("Podaj tytuł płyty: ",
-                    "Nie podano rzadnej nazwy płyty");
-
-            String finalBand = band;
-            String finalTitle = title;
-            isAlbumAlreadyInCollectionLambda = albums.stream().anyMatch(h -> h.getBand().equals(finalBand) &&
-                    h.getTitle().equals(finalTitle));
-            if (!isAlbumAlreadyInCollectionLambda) {
-                genre = readStringFromUserHandlingEmptyInput("Podaj gatunek wykonywanej muzyki: ",
-                        "Nie podano rzadnego gatunku");
-
-                releaseDate = readIntFromUserHandlingEmptyInput("Podaj rok wydania albumu: ",
-                        "Nie podano roku wydania płyty lub data wykracza poza możliwy relany historyczny zakres "
-                        , 1887, actualYear);
-                Messages.printSingleRecord(band, title, genre, releaseDate);
-                albums.add(new Album(band, title, genre, releaseDate));
-            } else {
-                System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście, spróbuj ponownie \n");
-            }
-
-            Messages.showEndingChooseMessage("dodać kolejną pozycję");
-
-            choose = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-
-        }
-        while (choose.toLowerCase().equals("t"));
+    private boolean isAlbumAlreadyInCollectionValidation(List<Album> albums, String band, String title) {
+        boolean isAlbumAlreadyInCollection;
+        return isAlbumAlreadyInCollection = albums.stream().anyMatch(h -> h.getBand().equals(band) &&
+                h.getTitle().equals(title));
     }
+
+    private void addAlbumToCollection(List<Album> albums, String band, String title, String genre, int releaseDate) {
+        albums.add(new Album(band, title, genre, releaseDate));
+    }
+
 
     private int readIntFromUserHandlingEmptyInput(String mainMessage, String exceptionMessage, int lowerConstraint, int upperConstraint) {
         int number;
+
         do {
             System.out.println(mainMessage);
             number = ConsoleInputProvider.readIntFromUserHandlingEmptyInput();
@@ -79,4 +52,50 @@ public class AddRecord {
 
         return result;
     }
+
+    public void addRecordToDbInterface(List<Album> albums) {
+
+        String band;
+        String title;
+        String genre;
+        String choose;
+        int releaseDate;
+        boolean isAlbumAlreadyInCollection;
+
+        int actualYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        do {
+            band = readStringFromUserHandlingEmptyInput("Podaj nazwę zespołu:",
+                    "Nie podano żadnej nazwy zespołu");
+
+            title = readStringFromUserHandlingEmptyInput("Podaj tytuł płyty: ",
+                    "Nie podano rzadnej nazwy płyty");
+
+            isAlbumAlreadyInCollection = isAlbumAlreadyInCollectionValidation(albums, band, title);
+
+            if (!isAlbumAlreadyInCollection) {
+                genre = readStringFromUserHandlingEmptyInput("Podaj gatunek wykonywanej muzyki: ",
+                        "Nie podano rzadnego gatunku");
+
+                releaseDate = readIntFromUserHandlingEmptyInput("Podaj rok wydania albumu: ",
+                        "Nie podano roku wydania płyty lub data wykracza poza możliwy relany historyczny zakres "
+                        , 1887, actualYear);
+
+                addAlbumToCollection(albums, band, title, genre, releaseDate);
+                System.out.println("Dodano album do kolekcji: ");
+                printToConsole.printHeading();
+                System.out.println(printToConsole.printHeading());
+                StringUtils.printSingleRecord(band, title, genre, releaseDate);
+                System.out.println(printToConsole.printEnding());
+
+            } else {
+                System.out.println("Wprowadzony album z podanym wykonawcą już istnieje na tej liście \n");
+            }
+            Messages.showEndingChooseMessage("dodać kolejną nową pozycję");
+            choose = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
+        }
+        while (choose.toLowerCase().equals("t"));
+    }
+
 }
+

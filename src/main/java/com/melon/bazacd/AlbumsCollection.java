@@ -13,7 +13,6 @@ import java.util.List;
 public class AlbumsCollection {
 
     private File chosenDb;
-
     private List<Album> albums;
     private LoadDb loadDb;
     private ReadAlbum readAlbum;
@@ -50,10 +49,10 @@ public class AlbumsCollection {
         this.loadDb = new LoadDb();
         this.readAlbum = new ReadAlbum();
         this.addRecord = new AddRecord(albums);
-        this.printToConsole = new PrintToConsole(albums);
+        this.printToConsole = new PrintToConsole();
         this.editRecord = new EditRecord(albums);
         this.deleteRecord = new DeleteRecord(albums);
-        this.saveDb = new SaveDb(albums);
+        this.saveDb = new SaveDb();
     }
 
     public void start() {
@@ -87,7 +86,7 @@ public class AlbumsCollection {
 
     private void endMessage() {
 
-       ConsoleInputProvider.waitForEnter();
+       ConsoleInputProvider.waitForPresedEnter();
     }
 
     private void welcomMenu() {
@@ -104,13 +103,13 @@ public class AlbumsCollection {
     }
 
     private void loadDB() {
-        chosenDb = loadDb.loadDb();
-        albums = readAlbum.read(chosenDb, StringUtils.countChar(printToConsole.heading(), '\n') + 1);
+        chosenDb = loadDb.loadDbInterface();
+        albums = readAlbum.readAlbumsDb(chosenDb, StringUtils.countChar(printToConsole.printHeading(), '\n') + 1);
         endMessage();
     }
 
     private void addRecord() {
-        addRecord.addRecord(albums);
+        addRecord.addRecordToDbInterface(albums);
     }
 
     private void printToConsole() {
@@ -119,16 +118,16 @@ public class AlbumsCollection {
     }
 
     private void editRecord() {
-        editRecord.edit(albums);
+        editRecord.editAlbumFieldsInterface(albums);
     }
 
     private void deleteRecord() {
-        deleteRecord.deleteRecord(albums);
+        deleteRecord.deleteRecordInterface(albums);
     }
 
     private void saveDb() {
-        saveDb.saveDb(albums);
-        endMessage();
+        saveDb.saveDbInterface(albums);
+
     }
 
 }
