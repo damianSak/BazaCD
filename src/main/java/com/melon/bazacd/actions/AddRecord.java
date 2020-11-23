@@ -53,7 +53,7 @@ public class AddRecord {
         return result;
     }
 
-    public void addRecordToDbInterface(List<Album> albums) {
+    public void addRecordToDb(List<Album> albums) {
 
         String band;
         String title;

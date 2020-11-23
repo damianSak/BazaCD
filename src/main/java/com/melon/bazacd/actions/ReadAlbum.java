@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ReadAlbum {
 
-    public List<Album> readAlbumsDb(File chosenDb, int headingSize) {
+    public List<Album> readAlbumsDbToList(File chosenDb, int headingSize) {
         List<Album> albums = new LinkedList<>();
         try {
             List<String> linesFromDb = Files.readAllLines(Path.of(chosenDb.getPath()));

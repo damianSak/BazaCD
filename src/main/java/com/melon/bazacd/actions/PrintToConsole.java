@@ -27,7 +27,7 @@ public class PrintToConsole {
         return "-------------------------+-------------------+-----------------+-------------";
     }
 
-    public void printToConsole(List<Album> albums) {
+    public void printAlbumsDbOnConsole(List<Album> albums) {
 
         System.out.println(printHeading());
         printAlbumRecrds(albums);

@@ -35,7 +35,7 @@ public class DeleteRecord {
         return albumsToDelete;
     }
 
-    public void deleteRecordInterface(List<Album> albums) {
+    public void deleteRecordFromDb(List<Album> albums) {
         String albumTitle;
         String userChoice;
         List<Album> albumsToDelete;

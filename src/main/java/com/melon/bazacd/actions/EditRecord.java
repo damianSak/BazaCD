@@ -19,7 +19,7 @@ public class EditRecord {
     }
 
 
-    public void editAlbumFieldsInterface(List<Album> albums) {
+    public void editAlbumFields(List<Album> albums) {
         String selectedAlbum;
         String userChoice;
         List<Album> albumsToEdit;

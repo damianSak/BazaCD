@@ -85,7 +85,7 @@ public class SaveDb {
         }
     }
 
-    public void saveDbInterface(List<Album> albums) {
+    public void saveDbToFile(List<Album> albums) {
         String userChoice;
         File dbFile;
         String dbName;

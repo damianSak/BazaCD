@@ -103,30 +103,30 @@ public class AlbumsCollection {
     }
 
     private void loadDB() {
-        chosenDb = loadDb.loadDbInterface();
-        albums = readAlbum.readAlbumsDb(chosenDb, StringUtils.countChar(printToConsole.printHeading(), '\n') + 1);
+        chosenDb = loadDb.loadDbFromFile();
+        albums = readAlbum.readAlbumsDbToList(chosenDb, StringUtils.countChar(printToConsole.printHeading(), '\n') + 1);
         endMessage();
     }
 
     private void addRecord() {
-        addRecord.addRecordToDbInterface(albums);
+        addRecord.addRecordToDb(albums);
     }
 
     private void printToConsole() {
-        printToConsole.printToConsole(albums);
+        printToConsole.printAlbumsDbOnConsole(albums);
         endMessage();
     }
 
     private void editRecord() {
-        editRecord.editAlbumFieldsInterface(albums);
+        editRecord.editAlbumFields(albums);
     }
 
     private void deleteRecord() {
-        deleteRecord.deleteRecordInterface(albums);
+        deleteRecord.deleteRecordFromDb(albums);
     }
 
     private void saveDb() {
-        saveDb.saveDbInterface(albums);
+        saveDb.saveDbToFile(albums);
 
     }
 

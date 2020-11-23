@@ -30,7 +30,7 @@ public class LoadDb {
     }
 
 
-    public File loadDbInterface() {
+    public File loadDbFromFile() {
         File file;
 
         System.out.println("\nZawartość katalogu z Bazami Płyt:");
