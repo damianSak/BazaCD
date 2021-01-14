@@ -22,19 +22,13 @@ public class AlbumsCollection {
     private DeleteRecord deleteRecord;
     private SaveDb saveDb;
 
-    private static final String LOAD = "wczytaj";
-    private static final String LOAD_DB = "wczytaj bazę";
-    private static final String ADD = "dodaj";
-    private static final String ADD_ALBUM = "dodaj album";
-    private static final String PRINT = "drukuj";
-    private static final String PRINT_DB = "drukuj bazę";
-    private static final String EDIT = "edytuj";
-    private static final String EDIT_ELEMENTS = "edytuj elementy";
-    private static final String DELETE = "usuń";
-    private static final String DELETE_FROM_DB = "usuń z bazy";
-    private static final String SAVE = "zapisz";
-    private static final String SAVE_TO_FILE = "zapisz do pliku";
-    private static final String EXIT = "zakończ";
+    private static final String LOAD = "1";
+    private static final String ADD = "2";
+    private static final String PRINT = "3";
+    private static final String EDIT = "4";
+    private static final String DELETE = "5";
+    private static final String SAVE = "6";
+    private static final String EXIT = "7";
 
     public AlbumsCollection() {
         this(new LinkedList<>());
@@ -62,17 +56,17 @@ public class AlbumsCollection {
             welcomMenu();
             line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput().toLowerCase();
 
-            if (line.equals(LOAD) || line.equals(LOAD_DB)) {
+            if (line.equals(LOAD)) {
                 loadDB();
-            } else if (line.equals(ADD) || line.equals(ADD_ALBUM)) {
+            } else if (line.equals(ADD)) {
                 addRecord();
-            } else if (line.equals(PRINT) || line.equals(PRINT_DB)) {
+            } else if (line.equals(PRINT)) {
                 printToConsole();
-            } else if (line.equals(EDIT) || line.equals(EDIT_ELEMENTS)) {
+            } else if (line.equals(EDIT)) {
                 editRecord();
-            } else if (line.equals(DELETE) || line.equals(DELETE_FROM_DB)) {
+            } else if (line.equals(DELETE)) {
                 deleteRecord();
-            } else if (line.equals(SAVE) || line.equals(SAVE_TO_FILE)) {
+            } else if (line.equals(SAVE)) {
                 saveDb();
             } else if (line.equals(EXIT)) {
                 ConsoleInputProvider.closeScanner();
@@ -83,9 +77,7 @@ public class AlbumsCollection {
         } while ( !line.toLowerCase().equals(EXIT));
     }
 
-
     private void endMessage() {
-
        ConsoleInputProvider.waitForPresedEnter();
     }
 
@@ -127,7 +119,6 @@ public class AlbumsCollection {
 
     private void saveDb() {
         saveDb.saveDbToFile(albums);
-
     }
 
 }
