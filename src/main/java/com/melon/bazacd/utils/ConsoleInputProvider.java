@@ -21,21 +21,21 @@ public class ConsoleInputProvider {
 
     public static int readIntFromUserHandlingEmptyInput() {
         int number = 0;
-        boolean isThereException;
+        boolean exceptionOccurred;
         do {
             try {
-                isThereException = false;
+                exceptionOccurred = false;
                 number = scanner.nextInt();
                 scanner.nextLine();
                 if (String.valueOf(number).length() == 0) {
                     System.out.println("Nie wprowadzono żadnej liczby");
                 }
             } catch (InputMismatchException e) {
-                isThereException = true;
+                exceptionOccurred = true;
                 System.out.println("Wprowadzona wartość nie jest liczbą całkowitą, podaj własciwą liczbę");
                 scanner.next();
             }
-        } while (isThereException);
+        } while (exceptionOccurred);
         return number;
     }
 
