@@ -1,6 +1,5 @@
 package com.melon.bazacd.actions;
 
-import com.melon.bazacd.model.Album;
 import com.melon.bazacd.utils.ConsoleInputProvider;
 import com.melon.bazacd.utils.StringUtils;
 
@@ -14,7 +13,6 @@ public class LoadDb {
 
     private String dbPath = StringUtils.selectDbPatch();
     private PrintToConsole printToConsole = new PrintToConsole();
-    private File file = new File(dbPath);
 
     void createDBFolder(File file) {
         if (!file.exists()) {
@@ -58,7 +56,8 @@ public class LoadDb {
         }
     }
 
-    public File loadDbFromFile(File file) {
+    public File loadDbFromFile() {
+        File file;
         System.out.println("\nZawartość katalogu z Bazami Płyt:\n");
         loadDBdir();
         System.out.println("\nWybierz bazę do wczytania:");
