@@ -36,6 +36,7 @@ public class LoadDb {
 
     protected void loadDBdir() {
         File file = new File(dbPath);
+        createDBFolder(file);
         String[] dirList = file.list();
         if (dirList.length == 0) {
             File newFile = new File(dbPath + "\\EmptyInitList.txt");
@@ -57,11 +58,7 @@ public class LoadDb {
         }
     }
 
-
     public File loadDbFromFile(File file) {
-
-        createDBFolder(file);
-
         System.out.println("\nZawartość katalogu z Bazami Płyt:\n");
         loadDBdir();
         System.out.println("\nWybierz bazę do wczytania:");
