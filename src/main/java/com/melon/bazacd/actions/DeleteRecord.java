@@ -9,19 +9,17 @@ import java.util.*;
 
 public class DeleteRecord {
 
-   private List<Album> albums;
+    private List<Album> albums;
 
-   private PrintToConsole printToConsole;
+    private PrintToConsole printToConsole;
 
     public DeleteRecord(List<Album> albums) {
         this.albums = albums;
         this.printToConsole = new PrintToConsole();
     }
 
-
     private boolean isAlbumInCollectionValidation(List<Album> albums, final String title) {
-        boolean isAlbumInCollection;
-        return isAlbumInCollection = albums.stream().anyMatch(h ->
+        return albums.stream().anyMatch(h ->
                 h.getTitle().equals(title));
     }
 

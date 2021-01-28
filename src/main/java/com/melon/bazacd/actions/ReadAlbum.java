@@ -10,11 +10,11 @@ import java.util.List;
 
 public class ReadAlbum {
 
-    public List<Album> readAlbumsDbToList(File chosenDb, int headingSize) {
+    public List<Album> readAlbumsDbToList(File chosenDb, int numberOfLinesInHeader) {
         List<Album> albums = new LinkedList<>();
         try {
             List<String> linesFromDb = Files.readAllLines(Path.of(chosenDb.getPath()));
-            List<String> albumsRecords = linesFromDb.subList(headingSize, linesFromDb.size() - 1);
+            List<String> albumsRecords = linesFromDb.subList(numberOfLinesInHeader, linesFromDb.size() - 1);
             addAlbumToLoadingList(albums, albumsRecords);
         } catch (IOException e) {
             e.printStackTrace();

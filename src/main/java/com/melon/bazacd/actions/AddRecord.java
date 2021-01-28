@@ -9,8 +9,8 @@ import java.util.*;
 
 public class AddRecord {
 
-   private List<Album> albums;
-   private PrintToConsole printToConsole;
+    private List<Album> albums;
+    private PrintToConsole printToConsole;
 
     public AddRecord(List<Album> albums) {
         this.albums = albums;
@@ -18,15 +18,13 @@ public class AddRecord {
     }
 
     private boolean isAlbumAlreadyInCollectionValidation(List<Album> albums, String band, String title) {
-        boolean isAlbumAlreadyInCollection;
-        return isAlbumAlreadyInCollection = albums.stream().anyMatch(h -> h.getBand().equals(band) &&
+        return albums.stream().anyMatch(h -> h.getBand().equals(band) &&
                 h.getTitle().equals(title));
     }
 
     private void addAlbumToCollection(List<Album> albums, String band, String title, String genre, int releaseDate) {
         albums.add(new Album(band, title, genre, releaseDate));
     }
-
 
     private int readIntFromUserHandlingEmptyInput(String mainMessage, String exceptionMessage, int lowerConstraint, int upperConstraint) {
         int number;

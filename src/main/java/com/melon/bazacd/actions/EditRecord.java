@@ -10,14 +10,13 @@ import java.util.List;
 
 public class EditRecord {
 
-   private List<Album> albums;
-   private PrintToConsole printToConsole;
+    private List<Album> albums;
+    private PrintToConsole printToConsole;
 
     public EditRecord(List<Album> albums) {
         this.albums = albums;
         this.printToConsole = new PrintToConsole();
     }
-
 
     public void editAlbumFields(List<Album> albums) {
         String selectedAlbum;
@@ -94,8 +93,7 @@ public class EditRecord {
     }
 
     private boolean isAlbumInCollectionValidation(List<Album> albums, final String title) {
-        boolean isAlbumInCollection;
-        return isAlbumInCollection = albums.stream().anyMatch(h ->
+        return albums.stream().anyMatch(h ->
                 h.getTitle().equals(title));
     }
 
