@@ -11,7 +11,7 @@ public class ConsoleInputProvider {
 
     public static void waitForPresedEnter() {
 
-        System.out.println("Wybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego MENU");
+        System.out.println("\nWybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego MENU");
         try {
             int read = System.in.read(new byte[2]);
         } catch (IOException e) {
@@ -20,22 +20,22 @@ public class ConsoleInputProvider {
     }
 
     public static int readIntFromUserHandlingEmptyInput() {
-        int number = 0 ;
-        boolean isThereException;
+        int number = 0;
+        boolean exceptionOccurred;
         do {
             try {
-                isThereException= false;
+                exceptionOccurred = false;
                 number = scanner.nextInt();
-
-                if(String.valueOf(number).length()==0){
+                scanner.nextLine();
+                if (String.valueOf(number).length() == 0) {
                     System.out.println("Nie wprowadzono żadnej liczby");
                 }
             } catch (InputMismatchException e) {
-                isThereException = true;
+                exceptionOccurred = true;
                 System.out.println("Wprowadzona wartość nie jest liczbą całkowitą, podaj własciwą liczbę");
                 scanner.next();
             }
-        } while (isThereException );
+        } while (exceptionOccurred);
         return number;
     }
 

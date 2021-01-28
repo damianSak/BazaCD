@@ -2,12 +2,14 @@ package com.melon.bazacd.utils;
 
 import java.util.Locale;
 
-/**
- * by putting as a 'c = \n' (end of the line) you
- * can count how many rows are for example in printHeading ended by that way
- */
+
 
 public class StringUtils {
+
+    /**
+     * by putting as a char end of the line ('c = \n' ) you
+     * can count how many end of lines are in choosed string;
+     */
 
     public static int countChar(String str, char c) {
         int count = 0;
@@ -25,6 +27,6 @@ public class StringUtils {
 
     }
     public static String selectDbPatch(){
-        return "D:\\java\\Baza danych płyt\\";
+        return "D:\\Album DB\\";
     }
 }

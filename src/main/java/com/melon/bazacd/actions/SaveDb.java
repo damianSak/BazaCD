@@ -17,10 +17,10 @@ import static java.lang.String.format;
 
 public class SaveDb {
 
-   private LoadDb loadDb;
-   private PrintToConsole printToConsole;
-
+    private LoadDb loadDb;
+    private PrintToConsole printToConsole;
     private final String dbPath = StringUtils.selectDbPatch();
+
     private static final String NEW = "nowa";
     private static final String NEW_DB = "nowa baza";
     private static final String ADD = "dodaj";
@@ -30,8 +30,7 @@ public class SaveDb {
         printToConsole = new PrintToConsole();
     }
 
-
-    public void saveDbToNewFile(List<Album> albums, File dbName) {
+    private void saveDbToNewFile(List<Album> albums, File dbName) {
         try {
             FileWriter writer = new FileWriter(dbName);
             writer.write(printToConsole.printHeading());
@@ -42,8 +41,7 @@ public class SaveDb {
         }
     }
 
-
-    public void saveDbToExistingFile(List<Album> albums, File dbFileName) {
+    private void saveDbToExistingFile(List<Album> albums, File dbFileName) {
         try {
             List<String> linesToReprint = readLinesFromExistingFileToReprint(dbFileName);
             FileWriter writer = new FileWriter(dbFileName);
