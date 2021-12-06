@@ -80,7 +80,7 @@ public class EditRecord {
 
 
                         userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                    } while (!userChoice.toLowerCase().equals("next"));
+                    } while (!userChoice.equalsIgnoreCase("next"));
                 }
             } else {
                 System.out.println("Nie ma takiego albumu lub błąd pisowni");
@@ -89,7 +89,7 @@ public class EditRecord {
 
             Messages.showEndingChooseMessage("aby wyszukać i edytować kolejne albumy");
             userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-        } while (userChoice.toLowerCase().equals("t"));
+        } while (userChoice.equalsIgnoreCase("t"));
     }
 
     private boolean isAlbumInCollectionValidation(List<Album> albums, final String title) {

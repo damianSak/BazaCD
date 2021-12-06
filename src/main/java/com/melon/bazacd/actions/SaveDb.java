@@ -31,8 +31,7 @@ public class SaveDb {
     }
 
     private void saveDbToNewFile(List<Album> albums, File dbName) {
-        try {
-            FileWriter writer = new FileWriter(dbName);
+        try(FileWriter writer = new FileWriter(dbName)) {
             writer.write(printToConsole.printHeading());
             writer.write("\n");
             writeDbToFile(writer, albums);
@@ -42,10 +41,8 @@ public class SaveDb {
     }
 
     private void saveDbToExistingFile(List<Album> albums, File dbFileName) {
-        try {
+        try (FileWriter writer = new FileWriter(dbFileName);) {
             List<String> linesToReprint = readLinesFromExistingFileToReprint(dbFileName);
-            FileWriter writer = new FileWriter(dbFileName);
-
             if (linesToReprint.size() < 4) {
                 saveDbToNewFile(albums, dbFileName);
             } else {
@@ -62,8 +59,8 @@ public class SaveDb {
     private List<String> readLinesFromExistingFileToReprint(File dbFileName) {
         List<String> linesToReprint = new LinkedList<>();
         try {
-            List<String> readedLinesFromExistingDb = Files.readAllLines(Path.of(dbFileName.getPath()));
-            linesToReprint = readedLinesFromExistingDb.subList(0, readedLinesFromExistingDb.size() - 1);
+            List<String> loadedLinesFromExistingDb = Files.readAllLines(Path.of(dbFileName.getPath()));
+            linesToReprint = loadedLinesFromExistingDb.subList(0, loadedLinesFromExistingDb.size() - 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +80,7 @@ public class SaveDb {
         }
     }
 
-    public void saveDbToFile(List<Album> albums) {
+    public void saveDbToFile(List<Album> albums) throws IOException {
         String userChoice;
         File dbFile;
         String dbName;
@@ -93,7 +90,7 @@ public class SaveDb {
             System.out.println("Nowa baza/ Dodaj do istniejącej bazy:");
             userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
 
-            if (userChoice.toLowerCase().equals(NEW) || userChoice.toLowerCase().equals(NEW_DB)) {
+            if (userChoice.equalsIgnoreCase(NEW) || userChoice.equalsIgnoreCase(NEW_DB)) {
                 do {
                     System.out.println("Podaj nazwę pliku do zapisu: ");
                     dbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
@@ -108,8 +105,8 @@ public class SaveDb {
                 Messages.showEndingChooseMessage("zapisać wybraną bazę jeszcze raz");
 
 
-            } else if (userChoice.toLowerCase().equals(ADD)) {
-                loadDb.loadDBdir();
+            } else if (userChoice.equalsIgnoreCase(ADD)) {
+                loadDb.loadDBDir();
                 System.out.println("Wybierz bazę do której mają być dodane elementy: ");
                 do {
                     dbName = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
@@ -127,7 +124,7 @@ public class SaveDb {
                 Messages.showEndingChooseMessage("wprowadzić właściwą opcję do zapisu");
             }
             userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-        } while (!userChoice.toLowerCase().equals("n"));
+        } while (!userChoice.equalsIgnoreCase("n"));
     }
 }
 

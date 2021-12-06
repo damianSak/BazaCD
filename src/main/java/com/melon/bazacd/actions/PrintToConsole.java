@@ -6,6 +6,7 @@ import com.melon.bazacd.utils.StringUtils;
 import java.util.List;
 
 public class PrintToConsole {
+    private String ending = "-------------------------+-------------------+-----------------+-------------";
 
     public String printHeading() {
         return "-------------------------+-------------------+-----------------+-------------\n" +
@@ -20,7 +21,7 @@ public class PrintToConsole {
     }
 
     String printEnding() {
-        return "-------------------------+-------------------+-----------------+-------------";
+        return ending;
     }
 
     public void printAlbumsDbOnConsole(List<Album> albums) {

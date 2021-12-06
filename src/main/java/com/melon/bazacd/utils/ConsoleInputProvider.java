@@ -9,7 +9,7 @@ public class ConsoleInputProvider {
     static Scanner scanner = new Scanner(System.in);
 
 
-    public static void waitForPresedEnter() {
+    public static void waitForEnterClick() {
 
         System.out.println("\nWybrana operacja została zakończona, wciśnij ENTER aby powrócić do głównego MENU");
         try {

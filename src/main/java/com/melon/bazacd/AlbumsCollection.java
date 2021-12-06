@@ -6,6 +6,7 @@ import com.melon.bazacd.utils.ConsoleInputProvider;
 import com.melon.bazacd.utils.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class AlbumsCollection {
         this(new LinkedList<>());
     }
 
-    public AlbumsCollection(List<Album> albums) {
+    private AlbumsCollection(List<Album> albums) {
         initializeActions(albums);
     }
 
@@ -53,7 +54,7 @@ public class AlbumsCollection {
         String line;
 
         do {
-            welcomMenu();
+            welcomeMenu();
             line = ConsoleInputProvider.readStringFromUserHandlingEmptyInput().toLowerCase();
 
             if (line.equals(LOAD)) {
@@ -74,14 +75,14 @@ public class AlbumsCollection {
             } else {
                 System.out.println("To nie jest poprawnie wybrana opcja z MENU, wpisz właściwą komendę: ");
             }
-        } while ( !line.toLowerCase().equals(EXIT));
+        } while ( !line.equalsIgnoreCase(EXIT));
     }
 
     private void endMessage() {
-       ConsoleInputProvider.waitForPresedEnter();
+       ConsoleInputProvider.waitForEnterClick();
     }
 
-    private void welcomMenu() {
+    private void welcomeMenu() {
         System.out.println("---------------------------");
         System.out.println("1. Wczytaj bazę płyt");
         System.out.println("2. Dodaj album do bazy");
@@ -95,8 +96,12 @@ public class AlbumsCollection {
     }
 
     private void loadDB() {
-        chosenDb = loadDb.loadDbFromFile();
-        albums = readAlbum.readAlbumsDbToList(chosenDb, StringUtils.countChar(printToConsole.printHeading(), '\n') + 1);
+        try {
+            this.chosenDb = loadDb.loadDbFromFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        albums = readAlbum.readAlbumsDbToList(this.chosenDb, StringUtils.countChar(printToConsole.printHeading(), '\n') + 1);
         endMessage();
     }
 
@@ -118,7 +123,11 @@ public class AlbumsCollection {
     }
 
     private void saveDb() {
-        saveDb.saveDbToFile(albums);
+        try {
+            saveDb.saveDbToFile(albums);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

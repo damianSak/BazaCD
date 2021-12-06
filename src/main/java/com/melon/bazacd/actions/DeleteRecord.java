@@ -44,15 +44,15 @@ public class DeleteRecord {
             albumTitle = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
             if (isAlbumInCollectionValidation(albums, albumTitle)) {
                 albumsToDelete = createListOfAlbumsToDelete(albums, albumTitle);
-                for (Album findedAlbum : albumsToDelete) {
+                for (Album foundedAlbum : albumsToDelete) {
                     System.out.println("Znaleziona pozycja w liście albumów: \n");
                     System.out.println(printToConsole.printHeading());
-                    StringUtils.printSingleRecord(findedAlbum.getTitle(), findedAlbum.getBand(), findedAlbum.getGenre(), findedAlbum.getReleaseYear());
+                    StringUtils.printSingleRecord(foundedAlbum.getTitle(), foundedAlbum.getBand(), foundedAlbum.getGenre(), foundedAlbum.getReleaseYear());
                     System.out.println("\n" + "Czy na pewno chcesz usunąć ten album z listy ? Wybierz T/t by usunąć lub N/n aby " +
                             "zobaczyć kolejną znalezioną pozycję lub wyjść jeśli nie ma ich więcej: ");
                     userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-                    if (userChoice.toLowerCase().equals("t")) {
-                        albumsToRemove.add(findedAlbum);
+                    if (userChoice.equalsIgnoreCase("t")) {
+                        albumsToRemove.add(foundedAlbum);
                     }
                 }
                 albums.removeAll(albumsToRemove);
@@ -62,6 +62,6 @@ public class DeleteRecord {
             }
             Messages.showEndingChooseMessage("spróbować usunąć kolejny album");
             userChoice = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
-        } while (userChoice.toLowerCase().equals("t"));
+        } while (userChoice.equalsIgnoreCase("t"));
     }
 }

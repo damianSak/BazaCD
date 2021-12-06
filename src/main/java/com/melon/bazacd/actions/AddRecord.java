@@ -92,7 +92,7 @@ public class AddRecord {
             Messages.showEndingChooseMessage("dodać kolejną nową pozycję");
             choose = ConsoleInputProvider.readStringFromUserHandlingEmptyInput();
         }
-        while (choose.toLowerCase().equals("t"));
+        while (choose.equalsIgnoreCase("t"));
     }
 
 }

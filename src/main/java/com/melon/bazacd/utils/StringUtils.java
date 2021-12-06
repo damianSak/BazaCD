@@ -6,6 +6,8 @@ import java.util.Locale;
 
 public class StringUtils {
 
+    private static final  String D_B_PATH= "D:\\Album DB\\";
+
     /**
      * by putting as a char end of the line ('c = \n' ) you
      * can count how many end of lines are in choosed string;
@@ -27,6 +29,6 @@ public class StringUtils {
 
     }
     public static String selectDbPatch(){
-        return "D:\\Album DB\\";
+        return D_B_PATH;
     }
 }

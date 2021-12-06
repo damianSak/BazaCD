@@ -20,19 +20,19 @@ public class LoadDb {
         }
     }
 
-    void createEmptyDB(File dbName) {
-        try {
-            FileWriter writer = new FileWriter(dbName);
+    void createEmptyDB(File dbName) throws IOException {
+
+        try(FileWriter writer = new FileWriter(dbName)) {
+
             writer.write(printToConsole.printHeading());
             writer.write("\n");
             writer.write(printToConsole.printEnding());
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected void loadDBdir() {
+    protected void loadDBDir() throws IOException {
         File file = new File(dbPath);
         createDBFolder(file);
         String[] dirList = file.list();
@@ -56,10 +56,10 @@ public class LoadDb {
         }
     }
 
-    public File loadDbFromFile() {
+    public File loadDbFromFile() throws IOException {
         File file;
         System.out.println("\nZawartość katalogu z Bazami Płyt:\n");
-        loadDBdir();
+        loadDBDir();
         System.out.println("\nWybierz bazę do wczytania:");
 
         do {
